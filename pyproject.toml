@@ -1,0 +1,5 @@
+[project]
+name = "agentic-operations"
+version = "0.1.0"
+description = "Persistent manufacturing decisions for Hermes"
+requires-python = ">=3.11"

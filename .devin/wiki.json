@@ -1,0 +1,40 @@
+{
+  "repo_notes": [
+    {
+      "content": "Agentic Operations is a manufacturing decision-case application packaged as one Hermes plugin. Runtime code is self-contained under plugin/hermes_ops. Core services own state transitions; tools and UI invoke the same services. Demo company data is synthetic.",
+      "author": "Project maintainers"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Product and Architecture",
+      "purpose": "Explain the product boundary, module ownership, and flow from evidence to observed outcomes.",
+      "parent": null
+    },
+    {
+      "title": "Decision Cases and Constraints",
+      "purpose": "Explain case states, source versions, obligations, BOM links, option evaluation, and shared reservations.",
+      "parent": null
+    },
+    {
+      "title": "Execution and Recovery",
+      "purpose": "Explain action identity, uncertain writes, reconciliation, worker leases, and restart behavior.",
+      "parent": null
+    },
+    {
+      "title": "Hermes Integration",
+      "purpose": "Document plugin installation, compatibility, tools, active-turn worker dispatch, and the interface.",
+      "parent": null
+    },
+    {
+      "title": "Evaluation and Playbook Versions",
+      "purpose": "Explain predictions, observations, metric definitions, correction proposals, and regression scenarios.",
+      "parent": null
+    },
+    {
+      "title": "Development and Demo",
+      "purpose": "Explain setup, tests, skills, parallel ownership, synthetic fixtures, and demo reproduction.",
+      "parent": null
+    }
+  ]
+}
