@@ -1,0 +1,20 @@
+{
+  "name": "agentic-operations-demo-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local, capture-driven 82-second product film; no publishing commands.",
+  "scripts": {
+    "stage": "node scripts/prepare.mjs",
+    "preview": "node scripts/hyperframes.mjs preview",
+    "check": "node scripts/hyperframes.mjs check",
+    "render": "node scripts/render.mjs",
+    "verify": "python3 scripts/verify.py"
+  },
+  "devDependencies": {
+    "gsap": "3.14.2",
+    "hyperframes": "0.9.34"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

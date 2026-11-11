@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agentic Operations · Orange</title>
+<style>
+:root{color-scheme:light;--bg:#f5f7f7;--surface:#fff;--sidebar:#131211;--text:#131211;--muted:#626b70;--line:#e0e6e7;--accent:#087582;--accent-soft:#e8f5f6;--brand-teal:#0296a7;--ice:#64f5f8;--violet:#ac8fff;--amber:#805800;--amber-bg:#fff6df;--green:#18764a;--green-bg:#e8f5ed;--red:#b63e42;--red-bg:#fceced;--side-text:#f5f5f5;--side-muted:#b4bcbe;--side-line:#333635;--side-panel:#202322;--side-active:#263c3e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Lexend,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:8px;padding:8px 14px;transition:background .15s,border-color .15s}
+button:hover:not(:disabled){border-color:#c2cbcd;background:#f4f7f7}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.primary:hover:not(:disabled){background:#075e68;border-color:#075e68}
+.quiet{background:transparent;border-color:transparent;color:var(--muted)}
+.quiet:hover:not(:disabled){color:var(--text);background:#eef1f2}
+h1,h2,h3{margin:0;font-weight:650}
+h1{font-size:32px;line-height:1.25;letter-spacing:-.01em}
+h2{font-size:15px}
+h3{font-size:13px}
+small,.small{font-size:12px;color:var(--muted)}
+.muted{color:var(--muted)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
+.shell{display:flex;height:100dvh;min-height:0;overflow:hidden}
+aside{width:208px;flex:none;background:var(--sidebar);color:var(--side-text);border-right:1px solid var(--side-line);padding:18px 14px;display:flex;flex-direction:column;gap:18px;overflow-y:auto}
+aside .eyebrow{color:var(--side-muted)}
+.brand{display:flex;gap:9px;align-items:center;font-size:14px;font-weight:700;color:var(--side-text)}
+.brand::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--ice);flex:none}
+.brand .sub{display:block;font-size:11px;font-weight:500;color:var(--side-muted)}
+.ws{border:1px solid var(--side-line);border-radius:9px;background:var(--side-panel);padding:9px 11px}
+.ws .name{font-weight:650;font-size:12.5px;color:var(--side-text)}
+.ws small{color:var(--side-muted)}
+.pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:650;background:var(--accent-soft);color:var(--accent)}
+.pill.amber{background:var(--amber-bg);color:var(--amber)}
+.pill.green{background:var(--green-bg);color:var(--green)}
+.pill.red{background:var(--red-bg);color:var(--red)}
+.pill.gray{background:#eceef3;color:var(--muted)}
+.pill.violet{background:var(--violet);color:var(--text)}
+.pill.ice{background:var(--side-active);color:var(--ice)}
+.eyebrow{text-transform:uppercase;letter-spacing:.09em;font-size:11px;font-weight:700;color:var(--muted)}
+.qhead{display:flex;justify-content:space-between;align-items:center}
+.queue{display:flex;flex-direction:column;gap:6px;overflow-y:auto}
+.queue button{display:flex;gap:8px;align-items:center;text-align:left;padding:9px 10px;border-radius:8px;border:1px solid transparent;background:transparent;font-size:12.5px;color:var(--side-text)}
+.queue button:hover:not(:disabled){background:var(--side-panel)}
+.queue button.active{background:var(--side-active);border-color:var(--side-line);border-left:3px solid var(--ice);padding-left:7px}
+.queue button small{color:var(--side-muted)}
+aside .quiet{color:var(--side-muted)}
+aside .quiet:hover:not(:disabled){color:var(--side-text);background:var(--side-panel)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--side-muted);flex:none}
+.dot.amber{background:#d9a21b}.dot.green{background:var(--green)}.dot.red{background:var(--red)}.dot.accent{background:var(--brand-teal)}
+.side-foot{margin-top:auto;font-size:11px;color:var(--side-muted);border-top:1px solid var(--side-line);padding-top:12px}
+main{flex:1;min-width:0;height:100%;min-height:0;display:flex;flex-direction:column}
+.topbar{height:56px;flex:none;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 26px;border-bottom:1px solid var(--line);background:var(--surface)}
+.crumbs{font-size:12.5px;color:var(--muted)}
+.crumbs b{color:var(--text);font-weight:600}
+.top-meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.bodyrow{flex:1;display:flex;min-height:0}
+.content{flex:1;min-width:0;overflow-y:auto;padding:26px 30px 60px}
+.inspector{width:272px;flex:none;border-left:1px solid var(--line);background:var(--surface);overflow-y:auto;padding:20px 18px}
+.insp-sec{padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.insp-sec:last-child{border-bottom:0}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:12.5px}
+.kv span:first-child{color:var(--muted)}
+.kv span:last-child{font-weight:550;text-align:right}
+.case-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:6px}
+.case-head .subtitle{margin-top:6px;color:var(--muted);font-size:12.5px}
+.status-line{display:flex;align-items:center;gap:10px;margin:14px 0 18px;font-size:13px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:4px 0 22px}
+.tabs button{border:0;border-radius:8px 8px 0 0;background:transparent;padding:9px 14px;font-size:13px;color:var(--muted);font-weight:550;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.card h2{margin-bottom:10px}
+.callout{border:1px solid #ecdcae;background:var(--amber-bg);color:var(--amber);border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:16px}
+.callout.ok{background:var(--green-bg);border-color:#bfe3cd;color:var(--green)}
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.metric{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.metric .num{font-size:20px;font-weight:700;margin-top:2px}
+.metric .num.warn{color:var(--amber)}
+.obls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.obl{border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:var(--surface)}
+.obl .t{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:650;margin-bottom:8px}
+.evrow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line)}
+.evrow:first-of-type{border-top:0}
+.evrow .ic{width:22px;height:22px;flex:none;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:11px;font-weight:700}
+.evrow p{margin:0 0 3px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:650;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.rejected td{color:var(--muted);background:#fafbfc}
+tr.chosen td{background:var(--accent-soft)}
+.reco{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--surface);margin-bottom:16px}
+.reco .costs{display:flex;gap:24px;margin:10px 0}
+.reco .costs .v{font-size:17px;font-weight:700}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{display:flex;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:12.5px}
+.timeline li:first-child{border-top:0}
+.timeline .h{color:var(--muted);font-variant-numeric:tabular-nums;min-width:34px}
+details{margin-top:6px}
+details summary{cursor:pointer;font-size:11.5px;color:var(--muted)}
+details pre{background:#f6f7f9;border:1px solid var(--line);border-radius:8px;padding:10px;font-size:10.5px;overflow:auto;max-height:240px}
+.notice{display:none;margin:0 0 16px;padding:11px 14px;border-radius:9px;font-size:13px;background:var(--accent-soft);color:var(--accent);border:1px solid #bcdfe4;cursor:pointer}
+.notice.show{display:block}
+.notice.error{background:var(--red-bg);border-color:#f2c4c6;color:var(--red)}
+.empty{padding:60px 0;text-align:center;color:var(--muted)}
+.insp-details{display:none}
+@media(max-width:1100px){.inspector{display:none}.insp-details{display:block;margin-bottom:16px}}
+@media(max-width:760px){.shell{flex-direction:column;height:auto;overflow:visible}main{height:auto}aside{width:auto;flex-direction:row;align-items:center;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--side-line);padding:10px 14px;gap:10px;overflow:visible}.queue{flex-direction:row;overflow-x:auto}.queue button{white-space:nowrap}.side-foot{display:none}.ws{display:none}.content{overflow:visible;padding:18px}.strip,.obls{grid-template-columns:1fr}.case-head{flex-direction:column}.topbar{padding:0 14px}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+<div class="brand"><div>Agentic Operations<span class="sub">Hermes plugin</span></div></div>
+<div class="ws"><div class="name">Orange</div><small>Manufacturing workspace · SGD</small><div style="margin-top:6px"><span class="pill ice">Synthetic</span></div></div>
+<div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:8px">
+<div class="qhead"><span class="eyebrow">Workqueue</span><span class="pill ice" id="queue-count">0</span></div>
+<div id="queue" class="queue"></div>
+<button data-action="seed" class="quiet" style="text-align:left">＋ New demo case</button>
+</div>
+<div class="side-foot">Synthetic workspace<br><span class="pill violet" id="policy-foot">Policy —</span></div>
+</aside>
+<main>
+<header class="topbar">
+<div class="crumbs">Workqueue / <b id="crumb-case">No case</b></div>
+<div class="top-meta"><span id="top-clock"></span><span id="top-policy"></span><span class="pill">Synthetic</span></div>
+</header>
+<div class="bodyrow">
+<div class="content" id="content" data-case-id="">
+<div id="notice" role="alert" class="notice"></div>
+<details class="insp-details"><summary>Case details</summary><div id="insp-mobile"></div></details>
+<div id="view"></div>
+</div>
+<div class="inspector" id="inspector"></div>
+</div>
+</main>
+</div>
+<script>
+const CONFIG = __OPS_CONFIG__;
+let cases = [], current = null, playbook = {}, busy = false;
+let activeView = 'overview';
+const $ = id => document.getElementById(id);
+const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+const money = cents => cents == null ? "—" : new Intl.NumberFormat("en-SG",{style:"currency",currency:"SGD"}).format(cents/100);
+const hour = value => value == null ? "Pending" : `h${value}`;
+const pretty = value => esc(JSON.stringify(value, null, 2));
+const detail = (value,label="Audit data") => `<details><summary>${esc(label)}</summary><pre>${pretty(value)}</pre></details>`;
+function setView(view){if(!['overview','plan','activity','outcome'].includes(view))return;activeView=view;render();}
+function notice(message,error=false){$("notice").textContent=message;$("notice").className=`notice show${error?" error":""}`;}
+async function api(path, body){
+  const hosted=CONFIG.api.startsWith('/api/plugins/');
+  const fetcher=hosted?window.parent.__HERMES_PLUGIN_SDK__?.authedFetch:window.fetch.bind(window);
+  if(!fetcher)throw new Error('Open Operations from the Hermes dashboard.');
+  const response=await fetcher(CONFIG.api+path,{method:body===undefined?"GET":"POST",credentials:"same-origin",headers:body===undefined?{}:{"Content-Type":"application/json","X-Ops-CSRF":CONFIG.csrf},body:body===undefined?undefined:JSON.stringify(body)});
+  const text=await response.text();let result;try{result=JSON.parse(text);}catch{throw new Error(`HTTP ${response.status}: server did not return JSON`);}
+  if(!response.ok)throw new Error(`${response.status} · ${result.error||result.detail||"Request failed"}`);
+  return result;
+}
+async function downloadCase(){
+ if(!current)return;
+ const c=await api('/cases/'+encodeURIComponent(current.id));
+ const payload={schema_version:1,synthetic:true,exported_at:new Date().toISOString(),case:c};
+ const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)+'\n'],{type:'application/json'}));
+ const link=document.createElement('a');link.href=url;link.download='orange-case-'+c.id+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function reload(id=current?.id){
+  [cases,playbook]=await Promise.all([api("/cases"),api("/playbook")]);
+  const target=id||cases[0]?.id;
+  current=target?await api("/cases/"+encodeURIComponent(target)):null;
+  render();
+}
+const STATUS_LABEL={OPEN:"Needs decision",READY:"Needs decision",EXECUTING:"Executing",OBSERVING:"Observing",NEEDS_ATTENTION:"Needs recovery",CANCELLED:"Cancelled",CLOSED:"Closed"};
+const EV_LABEL={case_opened:"Case opened",options_evaluated:"Options compared",plan_selected:"Plan reserved",action_confirmed:"Purchase confirmed",reconciled:"Recovery confirmed",supplier_cutoff_confirmed:"Supplier cutoff confirmed",clock_advanced:"Clock advanced",erp_receipt:"Receipt observed",original_receipt:"Original replenishment received",shipment:"Shipment observed",obligation_resolved:"Obligation resolved",case_closed:"Case closed",correction_proposed:"Correction proposed",correction_activated:"Correction activated",outcome_evaluated:"Outcome evaluated",task_created:"Review task created",task_succeeded:"Review task completed",action_outcome_unknown:"Connector outcome unknown"};
+const SHIP_LABEL={wait:"Wait for original supply",economy:"Banana · economy",priority:"Grapefruit · priority",unapproved:"Plum · unapproved"};
+const optLabel=o=>SHIP_LABEL[o.id]||o.label;
+const bestOption=c=>(c.options||[]).filter(o=>o.feasible).sort((a,b)=>a.incremental_cost_minor-b.incremental_cost_minor||a.id.localeCompare(b.id))[0];
+const confirmedAction=c=>(c.actions||[]).find(a=>a.status==='CONFIRMED');
+const pendingAction=c=>(c.actions||[]).find(a=>['IN_FLIGHT','UNCERTAIN','NEEDS_ATTENTION'].includes(a.status));
+function shipFor(c,orderId){const e=(c.events||[]).filter(x=>x.kind==='shipment'&&x.payload&&x.payload.order_id===orderId);return e.length?e[e.length-1].at_hour:null;}
+function statusInfo(c){
+  if(!c)return{label:"—",tone:"gray"};
+  const ev=c.evaluation;
+  if(c.state==='CLOSED'){
+    if(!(ev&&ev.complete))return{label:"Fulfilled · awaiting review",tone:"gray"};
+    if(ev.sales_on_time&&ev.replacement_on_time)return{label:"Resolved",tone:"green"};
+    const late=[!ev.replacement_on_time&&"warranty",!ev.sales_on_time&&"sales"].filter(Boolean).join(" + ");
+    return{label:`Closed · ${late} late`,tone:"amber"};
+  }
+  if(pendingAction(c))return{label:"Needs recovery",tone:"red"};
+  if(confirmedAction(c))return{label:"Observing",tone:"accent"};
+  if(c.selected_plan_id)return{label:"Ready to execute",tone:"accent"};
+  if((c.options||[]).length)return{label:"Plans ready",tone:"accent"};
+  if(c.state==='NEEDS_ATTENTION')return{label:"Needs recovery",tone:"red"};
+  return{label:"Needs decision",tone:"amber"};
+}
+function inspectorHtml(c){
+  if(!c)return'';
+  const s=c.snapshot;
+  const rows=[
+    ["Workspace","Orange"],["Product",s.product_id],["Component",s.component_id],
+    ["BOM",`${s.bom_id} · rev ${s.bom_revision}`],["Clock",`h${c.clock_hour}`],
+    ["Captured policy",`v${c.policy_version}`],["Spend authority",money(s.expedite_limit_minor)],
+  ].map(r=>`<div class="kv"><span>${esc(r[0])}</span><span>${esc(r[1])}</span></div>`).join("");
+  const commits=[[s.replacement_id,"Warranty · "+hour(s.replacement_due_hour)],[s.sales_order_id,"Sales · "+hour(s.sales_due_hour)]]
+    .map(r=>`<div class="kv"><span>${esc(r[0])}</span><span>${esc(r[1])}</span></div>`).join("");
+  const evLinks=(c.evidence||[]).map(e=>`<div class="evrow"><div class="ic">i</div><div><p>${esc(e.text||e.id)}</p><small><a href="#" data-view="overview" style="color:var(--accent);text-decoration:none">View in evidence</a></small></div></div>`).join("");
+  const tasks=(c.tasks||[]).map(t=>`<div class="kv"><span>${esc(t.role)}</span><span class="pill ${t.status==='SUCCEEDED'?'green':'amber'}">${esc(t.status)}</span></div>`).join("");
+  return `<div class="insp-sec"><div class="eyebrow" style="margin-bottom:8px">Case details</div>${rows}</div>
+  <div class="insp-sec"><div class="eyebrow" style="margin-bottom:8px">Commitments</div>${commits}</div>
+  ${evLinks?`<div class="insp-sec"><div class="eyebrow" style="margin-bottom:6px">Evidence</div>${evLinks}</div>`:""}
+  ${tasks?`<div class="insp-sec"><div class="eyebrow" style="margin-bottom:8px">Review tasks</div>${tasks}</div>`:""}`;
+}
+function overviewHtml(c){
+  const s=c.snapshot,ev=c.evaluation,options=c.options||[],selected=options.find(o=>o.id===c.selected_plan_id);
+  const missing=Math.max(0,(s.replacement_units+s.sales_units)*s.components_per_unit-s.stock_units);
+  const openCase=!['CLOSED','CANCELLED'].includes(c.state);
+  const callout=(openCase&&missing>0&&!c.selected_plan_id)?`<div class="callout"><strong>At case opening, ${missing} components were short.</strong> ${s.stock_units} usable on hand against ${(s.replacement_units+s.sales_units)*s.components_per_unit} committed — the original replenishment is delayed to ${hour(s.original_receipt_hour)} and both orders compete for the same stock and assembly time.</div>`:(ev&&ev.complete?`<div class="callout ok">Case observed against its original forecast. See the Outcome tab for what actually happened.</div>`:'');
+  const obl=(kind,id,units,due,forecast)=>{
+    const actual=shipFor(c,id);
+    return `<div class="obl"><div class="t"><span>${kind==='warranty'?'Warranty replacement':'Sales order'}</span><span class="pill gray">${esc(id)}</span></div>
+    <div class="kv"><span>Quantity</span><span>${esc(units)} assemblies</span></div>
+    <div class="kv"><span>Commitment</span><span>${hour(due)}</span></div>
+    <div class="kv"><span>Forecast ship</span><span>${forecast!=null?hour(forecast):'No plan selected'}</span></div>
+    <div class="kv"><span>Observed ship</span><span>${actual!=null?hour(actual):'Pending'}</span></div></div>`;};
+  const evidence=(c.evidence||[]).map(e=>{
+    const name=e.id==='supplier-delay'?'Supplier update':e.id==='bom-a'?'Bill of materials':e.id==='stock-ctrl-01'?'Stock on hand':e.kind;
+    return `<div class="evrow"><div class="ic">${esc(name[0])}</div><div><p><strong>${esc(name)}</strong> — ${esc(e.text||e.kind)}</p><small>Source ${esc(e.source_id||'simulation')} · observed ${hour(e.observed_hour??0)}</small></div></div>`;}).join("");
+  const tasks=(c.tasks||[]).map(t=>`<div class="evrow"><div class="ic">t</div><div><p>${esc(t.role)}</p><small><span class="pill ${t.status==='SUCCEEDED'?'green':'amber'}">${esc(t.status)}</span> ${esc(t.result?.summary||t.error||'')}</small></div></div>`).join("");
+  return `${callout}
+  <div class="strip">
+    <div class="metric"><small>Initial shortage</small><div class="num ${missing?'warn':''}">${missing} units</div></div>
+    <div class="metric"><small>Starting stock</small><div class="num">${s.stock_units} units</div></div>
+    <div class="metric"><small>Warranty deadline</small><div class="num">${hour(s.replacement_due_hour)}</div><small>Warranty ${esc(s.replacement_id)}</small></div>
+  </div>
+  <div class="card"><h2>Customer commitments</h2><div class="obls">${obl('warranty',s.replacement_id,s.replacement_units,s.replacement_due_hour,selected?.predicted_replacement_ship_hour)}${obl('sales',s.sales_order_id,s.sales_units,s.sales_due_hour,selected?.predicted_sales_ship_hour)}</div></div>
+  <div class="card"><h2>Evidence</h2>${evidence||'<p class="muted">No evidence recorded.</p>'}</div>
+  <div class="card"><h2>Evidence review</h2>${tasks||'<p class="small">No review task recorded.</p>'}<p class="small">A bounded, read-only model review runs inside an active Hermes turn via the <span class="mono">ops_investigate</span> tool. This page never starts a model and shows only persisted task state.</p><button data-action="investigate" class="quiet">Review evidence in Hermes</button></div>`;
+}
+function planHtml(c){
+  const s=c.snapshot,options=c.options||[];
+  const best=bestOption(c);
+  const reco=options.find(o=>o.id===c.selected_plan_id)||best;
+  const recoPanel=reco?`<div class="reco"><div class="qhead"><h2>${c.selected_plan_id?'Committed plan':'Recommended plan'}</h2><span class="pill ${c.selected_plan_id?'green':''}">${esc(optLabel(reco))}</span></div>
+    <div class="costs"><div><small>Expedite surcharge</small><div class="v">${money(reco.incremental_cost_minor)}</div></div><div><small>Components</small><div class="v">${money(reco.purchase_value_minor)}</div></div></div>
+    <div class="kv"><span>Warranty shipment forecast</span><span>${hour(reco.predicted_replacement_ship_hour)}</span></div>
+    <div class="kv"><span>Sales shipment forecast</span><span>${hour(reco.predicted_sales_ship_hour)}</span></div>
+    <div class="kv"><span>Receipt forecast</span><span>${hour(reco.predicted_receipt_hour)}</span></div>
+    ${!reco.feasible?`<p class="small" style="color:var(--red)">${esc((reco.reasons||[]).join(' · '))}</p>`:''}
+    </div>`:`<div class="card"><p class="muted">No plan evaluated yet. Compare recovery plans to see forecasts, costs, and constraint checks.</p></div>`;
+  const rows=options.map(o=>`<tr class="${!o.feasible?'rejected':''}${o.id===c.selected_plan_id?' chosen':''}">
+    <td><strong>${esc(optLabel(o))}</strong><br><small>${esc(o.supplier_id||'existing purchase order')}</small></td>
+    <td>${hour(o.predicted_receipt_hour)}</td><td>${hour(o.predicted_sales_ship_hour)}</td>
+    <td>${money(o.incremental_cost_minor)}</td>
+    <td>${o.id===c.selected_plan_id?'<span class="pill green">Selected</span>':o.feasible?(c.selected_plan_id?'<span class="pill gray" title="Committed plan is immutable">Not selected</span>':`<button data-action="select" data-plan="${esc(o.id)}">Select plan</button>`):`<span class="pill red">Rejected</span><br><small>${esc((o.reasons||[]).join(' · '))}</small>`}</td></tr>`).join("");
+  const stock=(c.reservations||[]).find(r=>r.kind==='stock');
+  const resSummary=c.selected_plan_id?`<div class="card"><h2>Reservations and intent</h2>
+    <div class="kv"><span>Stock reserved</span><span>${stock?stock.qty+' units ('+stock.state.toLowerCase()+')':'—'}</span></div>
+    <div class="kv"><span>Action intent</span><span>${(c.actions||[]).length?esc(c.actions[0].status):'—'}</span></div></div>`:'';
+  return `${recoPanel}${resSummary}
+  <div class="card"><div class="qhead" style="margin-bottom:10px"><h2>Compare options</h2><small>Policy v${esc(c.policy_version)} captured at case creation</small></div>
+  ${options.length?`<table><thead><tr><th>Option</th><th>Receipt</th><th>Sales ship</th><th>Expedite</th><th></th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="muted">Evaluate to compare approved suppliers against deadlines and authority.</p>'}</div>`;
+}
+function activityHtml(c){
+  const action=(c.actions||[])[0];
+  let statusCard;
+  if(!c.selected_plan_id)statusCard=`<div class="card"><p class="muted">No plan selected yet. Choose a feasible plan to prepare the simulated purchase.</p></div>`;
+  else if(pendingAction(c))statusCard=`<div class="callout"><strong>Recovery needed.</strong> The simulated connector outcome is ${esc(action.status.toLowerCase().replace('_',' '))}. Reconcile looks up the same logical action — it never blindly retries an unknown effect.</div>`;
+  else if(action&&action.status==='CONFIRMED'){
+    const reconciled=(c.events||[]).some(e=>e.kind==='reconciled');
+    statusCard=`<div class="callout ok"><strong>${reconciled?'Recovery confirmed · original purchase order recovered':'Purchase confirmed'}.</strong> Simulated ERP reference ${esc(action.external_ref||'—')}.</div>`;
+  }else statusCard=`<div class="card"><p><strong>Ready to execute.</strong> Action intent is persisted (${esc(action?.status||'PREPARED')}). Placing the simulated order writes to an independent ERP store that can be reconciled after interruption.</p></div>`;
+  const items=(c.events||[]).slice().sort((a,b)=>a.at_hour-b.at_hour).map(e=>`<li><span class="h">${hour(e.at_hour)}</span><div><span>${esc(EV_LABEL[e.kind]||e.kind.replaceAll('_',' '))}</span><details><summary>Audit data</summary><pre>${pretty(e.payload)}</pre></details></div></li>`).join("");
+  const audit=(c.actions||[]).map(a=>detail({id:a.id,idempotency_key:a.idempotency_key,payload_hash:a.payload_hash,payload:a.payload,attempts:a.attempts},"Technical audit")).join("");
+  return `${statusCard}
+  <div class="card"><div class="qhead" style="margin-bottom:8px"><h2>Timeline</h2><small>${(c.events||[]).length} recorded events</small></div><ol class="timeline">${items||'<li><span class="h">—</span>No events yet.</li>'}</ol></div>
+  ${audit?`<div class="card">${audit}</div>`:''}`;
+}
+function outcomeHtml(c){
+  const ev=c.evaluation,s=c.snapshot,options=c.options||[],selected=options.find(o=>o.id===c.selected_plan_id);
+  const confirmed=!!confirmedAction(c);
+  const controls=`<div class="card"><h2>Observe the source</h2><p class="small">Advance the synthetic clock only after a confirmed order. Due source events become observations; the model cannot author them.</p><div class="actions" style="justify-content:flex-start"><button data-action="advance24" ${confirmed?'':'disabled'}>+24 hours</button><button data-action="advance72" ${confirmed?'':'disabled'}>+72 hours</button><button data-action="evaluate" ${confirmed?'':'disabled'}>Evaluate outcome</button></div></div>`;
+  if(!ev||!ev.complete){
+    const missing=ev&&ev.missing?`<p class="small">Waiting on: ${esc(ev.missing.join(', ').replaceAll('_',' '))}</p>`:'';
+    return `<div class="card"><h2>Outcome pending</h2><p class="muted">The original forecast is preserved. Observations arrive when the simulated source emits them.</p>${missing}</div>${controls}`;
+  }
+  const wActualEarly=shipFor(c,s.replacement_id);
+  const allMet=ev.sales_on_time&&ev.replacement_on_time;
+  const top=allMet?`<div class="callout ok"><strong>Both commitments met.</strong> Sales shipped at ${hour(ev.actual_sales_ship_hour)} against a ${hour(s.sales_due_hour)} deadline.</div>`:`<div class="callout"><strong>${!ev.sales_on_time?`Sales missed the promise by ${ev.sales_late_hours}h. Forecast ${hour(ev.predicted_sales_ship_hour)} vs observed ${hour(ev.actual_sales_ship_hour)}.`:`Warranty shipped ${wActualEarly!=null?Math.max(0,wActualEarly-s.replacement_due_hour):0}h past its ${hour(s.replacement_due_hour)} commitment.`}</strong></div>`;
+  const wActual=shipFor(c,s.replacement_id);
+  const row=(label,fc,obs)=>`<tr><td>${label}</td><td>${hour(fc)}</td><td>${obs==null?'Pending':hour(obs)}</td><td>${obs==null?'—':(obs-fc===0?'on forecast':(obs-fc>0?'+':'')+(obs-fc)+' h')}</td></tr>`;
+  const table=`<div class="card"><h2>Forecast vs observed</h2><table><thead><tr><th></th><th>Forecast</th><th>Observed</th><th>Variance</th></tr></thead><tbody>
+  ${row('Component receipt',ev.predicted_receipt_hour,ev.actual_receipt_hour)}
+  ${row('Warranty shipment',selected?.predicted_replacement_ship_hour,wActual)}
+  ${row('Sales shipment',ev.predicted_sales_ship_hour,ev.actual_sales_ship_hour)}
+  </tbody></table><p class="small">Original forecast kept immutable (policy v${esc(c.policy_version)}).</p></div>`;
+  const costs=`<div class="card"><h2>Cost and inventory projection</h2>
+    <div class="kv"><span>Expedite surcharge</span><span>${money(ev.incremental_cost_minor)}</span></div>
+    <div class="kv"><span>Components principal</span><span>${money(ev.purchase_value_minor)}</span></div>
+    <div class="kv"><span>Inventory after original receipt</span><span>${esc(ev.inventory_after_original_receipt_units)} units (projection)</span></div>
+    <p class="small">Projected values only — no ROI or working-capital claim.</p></div>`;
+  let corr='<div class="card" data-section="correction"><h2>Correction</h2><p class="muted">No correction proposed for this case.</p></div>';
+  if(c.correction){
+    const co=c.correction;
+    const activeVersion=playbook.active_version??1;
+    const ready=co.state==='proposed'&&co.prev_version===activeVersion;
+    const stale=co.state==='proposed'&&co.prev_version!==activeVersion;
+    corr=`<div class="card" data-section="correction"><div class="qhead" style="margin-bottom:8px"><h2>Correction</h2><span class="pill ${co.state==='activated'?'green':'amber'}">${esc(co.state)}</span></div>
+    <p>Supplier cutoff delay of <strong>${esc(co.proposal?.cutoff_delay_hours)}h</strong> explains the observed late receipt (${hour(co.evidence?.actual_receipt_hour)} vs forecast ${hour(co.evidence?.predicted_receipt_hour)}).</p>
+    <div class="kv"><span>Proposes</span><span>policy v${esc(co.prev_version)} → v${esc((co.prev_version||0)+1)}</span></div>
+    ${stale?`<p class="small" style="color:var(--amber)">This proposal targets playbook v${esc(co.prev_version)}, but v${esc(activeVersion)} is already active and cannot be overwritten. Start a fresh case to use the active estimate.</p>`:''}
+    <div class="actions" style="justify-content:flex-start;margin-top:10px">
+    <button data-action="correction" class="${ready?'primary':''}" ${ready?'':'disabled'}>Activate estimate v2</button>
+    ${co.state==='activated'?`<button data-action="seed">Start next case · policy v${esc(co.new_version)}</button>`:''}
+    </div>${detail(co)}</div>`;
+  }
+  return `${top}${table}${corr}${costs}${controls}`;
+}
+function render(){
+  $("queue-count").textContent=cases.length;
+  $("queue").innerHTML=cases.length?cases.map(c=>{
+    const info=statusInfo(c);
+    return `<button data-case="${esc(c.id)}" class="${c.id===current?.id?'active':''}"><span class="dot ${info.tone==='accent'?'accent':info.tone}"></span><span>Component shortage<br><small>OPS-${esc(c.id.slice(0,6).toUpperCase())} · v${esc(c.policy_version)}</small></span></button>`;}).join(""):'<small>No open cases.</small>';
+  const av=playbook.active_version??playbook.version??playbook.policy_version??'—';
+  $("policy-foot").textContent=`Active playbook v${av}`;
+  $("top-policy").textContent=`Policy v${av}`;
+  $("content").dataset.caseId=current?.id||'';
+  $("inspector").innerHTML=inspectorHtml(current);
+  $("insp-mobile").innerHTML=inspectorHtml(current);
+  if(!current){
+    $("crumb-case").textContent='No case';
+    $("top-clock").textContent='';
+    $("view").innerHTML=`<div class="empty"><h1>No case selected</h1><p style="margin:12px 0 22px">Seed a synthetic case to compare recovery options.</p><button data-action="seed" class="primary">Seed demo case</button></div>`;
+    return;
+  }
+  const c=current,s=c.snapshot,info=statusInfo(c);
+  $("crumb-case").innerHTML=`OPS-${esc(c.id.slice(0,6).toUpperCase())}`;
+  $("top-clock").textContent=`Clock ${'h'+c.clock_hour}`;
+  const committed=s.replacement_units+s.sales_units;
+  const primary=primaryAction(c);
+  $("view").innerHTML=`
+  <div class="case-head"><div><h1>Component shortage</h1><div class="subtitle">OPS-${esc(c.id.slice(0,6).toUpperCase())} · ${esc(s.component_id)} · ${esc(s.product_id)} · ${committed} assemblies</div></div>
+  <div class="actions">${primary?`<button data-action="${primary.action}" class="primary">${esc(primary.label)}</button>`:''}<button data-action="export" class="quiet">Download case</button><button data-action="refresh" class="quiet">Refresh</button></div></div>
+  <div class="status-line"><span class="pill ${info.tone==='accent'?'':info.tone}">${esc(info.label)}</span>${c.attention_reasons?.length?`<small>${esc(c.attention_reasons.join(' · '))}</small>`:''}</div>
+  <div class="tabs" role="tablist">
+    ${['overview','plan','activity','outcome'].map(v=>`<button role="tab" aria-selected="${activeView===v}" data-view="${v}">${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}
+  </div>
+  <div role="tabpanel" data-section="${activeView}">${{overview:overviewHtml,plan:planHtml,activity:activityHtml,outcome:outcomeHtml}[activeView](c)}</div>`;
+}
+function primaryAction(c){
+  const ev=c.evaluation;
+  const activeVersion=playbook.active_version??1;
+  if(!(c.options||[]).length)return{action:'plan',label:'Compare recovery plans'};
+  if(!c.selected_plan_id){const best=bestOption(c);return best?{action:'select-best',label:`Approve ${optLabel(best)} · ${money(best.incremental_cost_minor)}`}:null;}
+  if(pendingAction(c))return{action:'reconcile',label:'Recover purchase order'};
+  const action=(c.actions||[])[0];
+  if(action&&action.status==='PREPARED')return{action:'execute',label:'Place simulated order'};
+  if(confirmedAction(c)&&!(ev&&ev.complete))return{action:'observe',label:'Observe simulated outcome'};
+  if(c.correction?.state==='proposed'&&c.correction.prev_version===activeVersion)return{action:'correction',label:'Activate corrected estimate'};
+  return{action:'seed',label:'Start next case'};
+}
+document.addEventListener("click",async event=>{
+  const link=event.target.closest("[data-view]");
+  if(link){event.preventDefault();setView(link.dataset.view);return;}
+  const target=event.target.closest("button");if(!target||target.disabled||busy)return;
+  const action=target.dataset.action,caseId=target.dataset.case;if(!action&&!caseId)return;
+  busy=true;target.disabled=true;const old=target.textContent;target.textContent="Working…";
+  try{
+    if(caseId){await reload(caseId);return;}
+    if(action==="refresh"){await reload();notice("Queue refreshed.");return;}
+    if(action==="export"){await downloadCase();notice("Case exported.");return;}
+    if(action==="seed"){const next=await api("/demo/seed",{});activeView='overview';await reload(next.id);notice("Demo case created.");return;}
+    if(!current)throw new Error("Create a synthetic case first.");
+    if(action==="investigate"){await reload();notice(`No model is running from this UI. In an active Hermes turn, invoke ops_investigate with case_id "${current.id}". The review is a bounded no-tools model task, not an autonomous subagent.`);return;}
+    const base="/cases/"+encodeURIComponent(current.id);
+    const best=bestOption(current);
+    if(action==="observe"){
+      const need=Math.max(0,72-current.clock_hour);
+      if(need)await api(base+"/advance",{hours:need});
+      await api(base+"/evaluate",{});
+      activeView='outcome';await reload();notice("Outcome evaluated.");return;
+    }
+    const routes={plan:["plan",{expected_revision:current.revision}],select:["select",{plan_id:target.dataset.plan,expected_revision:current.revision}],"select-best":["select",{plan_id:best?.id,expected_revision:current.revision}],execute:["execute",{}],reconcile:["reconcile",{}],advance24:["advance",{hours:24}],advance72:["advance",{hours:72}],evaluate:["evaluate",{}],correction:["correction",{expected_policy_version:playbook.active_version??playbook.version??playbook.policy_version??current.policy_version}]};
+    const route=routes[action];if(!route)throw new Error("Unknown operation");
+    await api(base+"/"+route[0],route[1]);
+    if(action==='plan')activeView='plan';
+    else if(action==='select'||action==='select-best'||action==='execute'||action==='reconcile')activeView='activity';
+    else if(action==='evaluate'||action==='correction')activeView='outcome';
+    const doneMsg={plan:"Plan evaluated.",select:"Plan approved.","select-best":"Plan approved.",execute:"Simulated order placed.",reconcile:"Purchase order reconciled.",advance24:"Clock advanced.",advance72:"Clock advanced.",evaluate:"Outcome evaluated.",correction:"Correction activated."};
+    await reload();notice(doneMsg[action]||"Done.");
+  }catch(error){notice(error.message,true);try{await reload();}catch{}}
+  finally{busy=false;if(target.isConnected){target.disabled=false;target.textContent=old;}}
+});
+$("notice").addEventListener("click",()=>{$("notice").className="notice";});
+reload().catch(error=>{notice(error.message,true);$("view").innerHTML='<div class="empty"><h1>Service unavailable</h1><p>No successful operation is implied. Check that the core is installed, then refresh.</p></div>';});
+</script>
+</body>
+</html>

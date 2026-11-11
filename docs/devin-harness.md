@@ -22,22 +22,27 @@ Every component below carries exactly one status:
 
 Documentation of intent is not a connection; a connection is not a verification.
 
-## Current status (initial scaffold)
+## Current setup status
 
 | Component | Status | Evidence / next step |
 | --- | --- | --- |
-| GitHub repository `ryanteoyx/agentic-operations` | Prepared | `gh` CLI is authenticated locally as `ryanteoyx`; the proposed repo lookup returned 404, so creation is still required |
+| GitHub repository `ryanteoyx/agentic-operations` | Prepared | Initial scaffold lookup returned 404 and local `gh` auth was available; current remote publication is a release-owner check, not established by that earlier lookup |
 | Devin GitHub App on this repo | Prepared | CLI auth does not establish the App connection; connect after repo creation |
-| CI / branch protection | Prepared | Add CI and PR template first; add required status checks after a first successful CI run |
-| Linear project "Agentic Operations" | Prepared | MCP discovery found no connected servers; native Devin Linear integration not yet connected — `docs/backlog.md` is the actionable backlog until it is |
+| CI / branch protection | Prepared | `.github/workflows/ci.yml` now defines bounded Python 3.11/3.14 contract jobs; no hosted CI run or branch protection is verified; add required checks only after the first successful run |
+| Linear project "Agentic Operations" | Prepared | Native Devin Linear integration remains unverified — `docs/backlog.md` is the actionable backlog; a verified Mobbin MCP does not establish Linear access |
 | DeepWiki | Prepared | `.devin/wiki.json` must use object-array `repo_notes` and `pages`; index after code is pushed and check a generated answer against source |
 | Devin skills | Prepared | Repo-local skills under `.devin/skills/`; organization registration needed before synced Linear labels can select them |
 | Devin Review | Prepared | Enroll repo/author after GitHub App connection; verify on a real test PR |
 | Automations | Prepared | Configure after the first working release |
 | Cloud environment blueprint | Prepared | Generate `environment.yaml` via the Declarative Repo Setup skill once commands/deps are stable; verify with a fresh Cloud session |
+| Mobbin MCP | Verified | Exercised through the user's OAuth connection, configured at user level; no credentials or account configuration belong in this repository |
+| Aside CLI | Verified | Working persistent REPL; this is a development aid, not a runtime service or model-worker proof |
+| Impeccable source scan | Verified | Impeccable 4.8.2 read-only source CLI scan reported 0 findings after the microtext fix; this is not UI usability or production-security verification |
 
-Nothing in this table is connected or verified yet. Until a component reaches
-**Verified**, do not claim it works.
+Verification is limited to the exercise named in each row. Linear, DeepWiki,
+Devin Review, and Cloud account workflows remain unverified. No new hooks were
+installed. Product implementation and its separate verification record are
+listed below; do not infer an external account connection from working code.
 
 ## Operating instructions
 
@@ -47,16 +52,17 @@ Nothing in this table is connected or verified yet. Until a component reaches
   availability) and push `main`.
 - Connect the Devin GitHub App to the repository for platform write features;
   local `gh` authentication alone does not establish this connection.
-- Add CI, a PR template, and required status checks **after** a first
-  successful CI run. Require passing checks on `main`.
+- The contract CI workflow is present. Add a PR template and configure required
+  status checks **after** a first successful CI run. Require passing checks on
+  `main`.
 - Configure reviewer requirements only if a real eligible reviewer/approval
   workflow exists — a bot review is not automatically a valid required
   approving review (important for a solo maintainer).
 - Keep one logical issue/PR per independent change.
 - Keep backups, credentials, session data, generated SQLite files, caches, and
   personal/company documents outside the public tree.
-- Proposed license for original code: MIT, retaining notices for any reused
-  code. Verify copied examples and dependencies before publishing.
+- Original code has an MIT `LICENSE`, retaining notices for any reused code.
+  Verify copied examples and dependencies before publishing.
 
 ### Linear
 
@@ -100,7 +106,7 @@ Nothing in this table is connected or verified yet. Until a component reaches
 
 - Keep `AGENTS.md` short: source locations, invariants, commands, pointers to
   skills. Do not paste the whole research brief into every session.
-- Planned repo-local skills: `implement-case-feature`, `parallel-workstreams`,
+- Available repo-local skills: `implement-case-feature`, `parallel-workstreams`,
   `prepare-demo`, `weekly-ops-review` under `.devin/skills/`.
 - New reusable Devin guidance should use **Skills/Plugins** — Knowledge and
   Playbooks are migrating; do not build around them.
@@ -176,3 +182,145 @@ durable source of work.
 - [Advanced capabilities](https://docs.devin.ai/work-with-devin/advanced-capabilities)
 - [Environment blueprints](https://docs.devin.ai/onboard-devin/environment/blueprints)
 - [Blueprint reference](https://docs.devin.ai/onboard-devin/environment/blueprint-reference)
+
+## Product verification record
+
+Recorded checks for release preparation on 12 November 2026.
+
+The current UI names the product **Agentic Operations**, company **Orange**,
+and suppliers **Banana · economy**, **Grapefruit · priority**, and
+**Plum · unapproved**; stable business IDs are unchanged. Its charcoal/teal/
+ice-cyan palette references Transcelestial, and the information hierarchy
+references Linear/Shopify examples through Mobbin. The four tabs are
+Overview/Plan/Activity/Outcome, with a contextual primary action and public,
+redacted **Download case** JSON. Design references are not independent
+usability or production-security evidence.
+
+### Tests already run
+
+The repository-wide command is:
+
+```sh
+python3 -m unittest discover -s tests -p 'test_*.py' -v
+```
+
+| Scope | Environment | Actual result |
+| --- | --- | --- |
+| Core contracts | Python 3.11 and Python 3.14 | 48 passed on each |
+| Combined core and adapter suite | Python 3.11.15 | 58 total: 57 passed, 1 optional FastAPI test skipped because host dependencies were absent |
+| That single previously skipped FastAPI test | Existing Hermes PM environment, Python 3.14.9 | Passed separately; this was not a rerun of the complete suite under that interpreter |
+
+Coverage includes constrained planning, stale revisions, shared-resource
+reservation checks, stable action identity, owned-process interruption and
+fresh-process recovery, original forecasts and v2 correction, installed-copy
+loading, profile separation, public schemas, standalone HTTP boundaries, and
+bounded worker success/failure/timeout/staleness. Model calls in tests use
+stubs; these results do not establish live provider access.
+
+The checked fixture expectations are v1 sales forecast **h48**, observation
+**h72**, forecast error **+24 hours**, deadline miss **12 hours** against h60;
+v2 priority forecast/observation **h54**; and warranty shipment **h16**.
+Crash recovery uses an owned-process exit **73** after simulated ERP commit,
+then a fresh process reconciles **one matching PO**. The original v1 forecast
+is immutable. These are tested fixture contracts, not final release-SHA
+measurement or capture results.
+
+### Native Hermes checks already run
+
+Host reference: **Hermes 0.23.1+2046.gb5f15a6**, source revision
+**`b5f15a6d31`**, with an isolated profile.
+
+- Plugin validator passed for the updated dashboard bundle; the plugin was enabled.
+- `agentic_operations` registered **11 tools**.
+- `hermes ops seed`, `hermes ops list`, and `hermes ops playbook` were exercised.
+- Native HTTP checks for plugin UI
+  (`/api/plugins/agentic-operations/ui`), plugin health
+  (`/api/plugins/agentic-operations/health`), and the host toolsets endpoint
+  returned **401 anonymously** and **200 with normal host authentication**.
+  The host auth boundary was not bypassed.
+- The `#plugin/hermes_ops` repository-subdirectory install syntax was checked
+  against the host's `plugins_cmd._resolve_git_url`. This is not proof of an
+  installation from the exact published release revision.
+
+**Native browser workflow passed** at `http://127.0.0.1:8770/operations` under
+the isolated Hermes profile. The IIFE entry loads the embedded plugin UI
+through the public SDK, and API requests use `SDK.authedFetch`. The real-host
+browser flow `/operations` → iframe → seed → plan → select → execute →
+observe → correction completed with all requests returning **200**, no
+authenticated **401s**, and no JavaScript errors. Anonymous access to
+`/api/plugins/agentic-operations/ui` remained **401**. Screenshot:
+`artifacts/native-pilot/native-operations.png`.
+
+Native **Desktop** integration is not implemented. Live provider/model
+investigation was **not attempted**: the isolated profile has no provider
+credentials. `ops_investigate` is a bounded no-tools model task, not autonomous
+subagent execution. Its 60-second model wait, 90-second durable attempt lease,
+and two-attempt core checks do not provide automatic redispatch or a public
+resume control; each new tool request creates a new task.
+
+### CI scope and reproducibility
+
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs only the contract
+suite on `ubuntu-latest` with Python **3.11** and **3.14**. Jobs have a
+10-minute timeout, read-only repository permission, and cancel superseded runs
+in the same workflow/ref group. There are no unbounded background jobs or
+dependency-install steps.
+
+Action revisions were checked against their GitHub commit references:
+
+- `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683` — v4.2.2.
+- `actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065` — v5.6.0.
+
+The optional FastAPI route test skips when host dependencies are not available.
+The standalone product is standard-library-only; the separate native-host
+result above covers the skipped test's host environment. No GitHub Actions
+success or required branch check is claimed before an actual hosted run.
+
+The deterministic reproduction command is:
+
+```sh
+python3 demo/run_demo.py --artifacts ./artifacts/recovery-proof
+```
+
+It uses fresh temporary data by default and writes stage JSON plus
+`result.json`. Final measurement from the clean installed release revision
+remains pending. Optional video capture/render tooling is described in
+[`demo/video/README.md`](../demo/video/README.md), separate from product
+dependencies.
+
+### Documentation/CI checks performed
+
+`git diff --check` and whitespace/final-newline checks passed, including checks
+of the new operator guide and CI workflow. The existing Ruby/Psych parser
+accepted the workflow, and a read-only comparison confirmed the SHA-pinned
+YAML matched the specified configuration without installing dependencies.
+Local Markdown links and heading anchors resolved, including the company
+deployment guide.
+
+### Remaining release gates and non-claims
+
+The coordination targets are **04:45 SGT freeze**, **05:15 SGT release**, and
+delivery **before 05:30 SGT** on 12 November. These are operating targets, not
+proof of publication or a change to the announcement deadline recorded in
+[`submission.md`](submission.md).
+
+The native **Operations** browser entry, full authenticated workflow, and
+updated-bundle validation passed. For the remaining gates, record the exact
+revision, environment, command or browser exercise, outcome, and artifact/URL:
+
+1. Install and validate the exact **published full release SHA**, then record
+   the clean installed-copy check.
+2. Final recovery/outcome measurement and real release capture, with the
+   original forecast intact; final video asset is not published yet.
+3. First hosted CI run and any subsequently configured required checks.
+4. Catalog PR, public release/video URLs, and submission confirmation. No
+   catalog PR has been created in this record; do not substitute invented URLs
+   or planned actions for completed submissions.
+
+This release uses only synthetic ERP actions and SQLite on a single host.
+Production ERP connectors, Temporal, Postgres, shared company memory, RBAC,
+and Desktop integration are not implemented. The
+[company deployment guide](company-deployment.md) describes architecture and
+readiness requirements, not installed production infrastructure. Synthetic
+fixture outcomes are not ROI evidence. Impeccable's zero-finding source scan
+does not establish UI usability or production security.

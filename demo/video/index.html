@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920,height=1080">
+  <title>Agentic Operations — capture-driven film</title>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: Inter; src: url("assets/Inter-400.woff2"); font-weight: 400; }
+    @font-face { font-family: Inter; src: url("assets/Inter-700.woff2"); font-weight: 700; }
+    :root { --navy: #131211; --amber: #64f5f8; --ink: #f5f5f5; --muted: #b9c8c9; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--navy); }
+    body { color: var(--ink); font-family: Inter, sans-serif; }
+    #main { width: 1920px; height: 1080px; position: relative; overflow: hidden; }
+    .footage { position: absolute; inset: 0; width: 1920px; height: 1080px; object-fit: contain; z-index: 0; }
+    .topbar { position: absolute; inset: 0 0 auto; height: 94px; background: var(--navy); border-bottom: 2px solid #344040; display: flex; align-items: center; justify-content: space-between; padding: 0 96px; z-index: 2; }
+    .brand { font-size: 29px; font-weight: 700; letter-spacing: -.6px; }
+    .brand b { color: var(--amber); }
+    .badge { font-size: 22px; color: var(--muted); letter-spacing: 1.6px; }
+    .lower { position: absolute; inset: auto 0 0; height: 180px; background: var(--navy); border-top: 2px solid #344040; z-index: 2; }
+    .label { position: absolute; left: 96px; right: 96px; top: 918px; height: 47px; display: flex; align-items: center; gap: 22px; z-index: 3; }
+    .chapter { color: var(--amber); font-size: 22px; font-weight: 700; white-space: nowrap; }
+    .shot-title { font-size: 28px; font-weight: 700; white-space: nowrap; }
+    .shot-subtitle { font-size: 22px; color: var(--muted); margin-left: auto; text-align: right; max-width: 810px; }
+    .caption { position: absolute; left: 192px; width: 1536px; top: 980px; height: 58px; text-align: center; font-size: 34px; line-height: 1.3; z-index: 4; }
+    .caption span { display: inline-block; padding: 6px 22px; border-left: 3px solid var(--amber); }
+    .title-card { position: absolute; inset: 94px 0 180px; z-index: 5; background: var(--navy); padding: 164px 192px; }
+    .title-inner { max-width: 1440px; }
+    .eyebrow { color: var(--amber); font-size: 23px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 26px; }
+    h1 { font-size: 83px; line-height: 1.07; letter-spacing: -4px; margin: 0 0 28px; }
+    .title-copy { font-size: 30px; line-height: 1.5; color: var(--muted); margin: 0; }
+    .draft-placeholder { position: absolute; inset: 0 0 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; background: var(--navy); color: var(--muted); font-size: 30px; }
+    .draft-placeholder strong { color: var(--amber); font-size: 48px; }
+    .draft-placeholder p { margin: 0; }
+    .draft-flag { position: absolute; top: 110px; right: 96px; color: var(--navy); background: var(--amber); padding: 12px 18px; font-size: 22px; font-weight: 700; z-index: 10; }
+    #progress { position: absolute; left: 0; bottom: 0; width: 1920px; height: 5px; background: var(--amber); transform-origin: left center; z-index: 6; }
+  </style>
+</head>
+<body>
+  <div id="main" data-composition-id="main" data-start="0" data-duration="82" data-width="1920" data-height="1080" data-fps="30" data-layout-allow-overlap>
+    <!-- FOOTAGE -->
+    <div id="intro-brand" class="clip topbar" data-start="0" data-duration="5.3" data-track-index="4"><div class="brand">Agentic <b>Operations</b></div><div class="badge">HERMES PLUGIN · SYNTHETIC DEMO</div></div>
+    <div id="outro-brand" class="clip topbar" data-start="77.9" data-duration="4.1" data-track-index="4"><div class="brand">Agentic <b>Operations</b></div><div class="badge">HERMES PLUGIN · SYNTHETIC DEMO</div></div>
+    <div class="lower"></div>
+    <!-- LABELS -->
+    <!-- CAPTIONS -->
+    <section id="opening" class="clip title-card" data-start="0" data-duration="5.3" data-track-index="4">
+      <div class="title-inner" id="opening-inner"><p class="eyebrow">Built with Devin · Hermes plugin</p><h1>Decisions that<br>survive interruptions.</h1><p class="title-copy">Agentic Operations · Manufacturing control room</p></div>
+    </section>
+    <section id="closing" class="clip title-card" data-start="77.9" data-duration="4.1" data-track-index="4">
+      <div class="title-inner" id="closing-inner"><p class="eyebrow">Durable execution · Observed correction</p><h1>Keep the commitment.<br>Keep the evidence.</h1><p class="title-copy">Built with Devin. Packaged for Hermes.<br>Synthetic scenario. No manufacturing ROI claim.</p></div>
+    </section>
+    <!-- DRAFT -->
+    <div id="progress"></div>
+    <audio id="emma" class="clip" src="assets/narration.wav" data-start="0" data-duration="82" data-volume="1" data-track-index="5"></audio>
+  </div>
+  <script>
+    const tl = gsap.timeline({paused: true});
+    tl.fromTo("#opening-inner", {y: 18, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: "power2.out"}, 0);
+    tl.to("#opening-inner", {opacity: 0, duration: .22}, 5.08);
+    tl.fromTo("#closing-inner", {y: 16, opacity: 0}, {y: 0, opacity: 1, duration: .35, ease: "power2.out"}, 77.9);
+    tl.fromTo("#progress", {scaleX: 0}, {scaleX: 1, duration: 82, ease: "none"}, 0);
+    window.__timelines = window.__timelines || {};
+    window.__timelines.main = tl;
+    tl.seek(0);
+  </script>
+</body>
+</html>

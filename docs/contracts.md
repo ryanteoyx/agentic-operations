@@ -74,7 +74,7 @@ Base instant: `2026-11-16T08:00:00Z` (16:00 Asia/Singapore), synthetic clock hou
 
 | Input | Value |
 | --- | --- |
-| Company | Meridian Assembly, synthetic |
+| Company | Orange, synthetic |
 | Currency | SGD; all monetary values integer cents |
 | Product | PUMP-A; BOM-A revision A |
 | Component | CTRL-01; one unit per assembly |

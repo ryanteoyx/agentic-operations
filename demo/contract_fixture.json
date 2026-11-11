@@ -1,0 +1,79 @@
+{
+  "scenario_id": "cutoff",
+  "synthetic": true,
+  "company": "Orange",
+  "currency": "SGD",
+  "timezone": "Asia/Singapore",
+  "base_instant": "2026-11-16T08:00:00Z",
+  "product_id": "PUMP-A",
+  "bom_id": "BOM-A",
+  "bom_revision": "A",
+  "component_id": "CTRL-01",
+  "unit": "each",
+  "components_per_unit": 1,
+  "stock_units": 6,
+  "replacement_id": "WR-104",
+  "replacement_units": 4,
+  "replacement_due_hour": 24,
+  "sales_order_id": "SO-208",
+  "sales_units": 8,
+  "sales_due_hour": 60,
+  "hours_per_unit": 4,
+  "original_po_id": "PO-ORIGINAL",
+  "original_po_units": 8,
+  "original_receipt_hour": 96,
+  "component_cost_minor": 5000,
+  "expedite_limit_minor": 15000,
+  "evidence": [
+    {
+      "id": "supplier-delay",
+      "kind": "supplier_message",
+      "source_id": "PO-ORIGINAL",
+      "text": "The original eight CTRL-01 components will now arrive at synthetic hour 96.",
+      "observed_hour": 0
+    },
+    {
+      "id": "bom-a",
+      "kind": "bom",
+      "source_id": "BOM-A",
+      "text": "Revision A requires one CTRL-01 component per PUMP-A assembly.",
+      "observed_hour": 0
+    },
+    {
+      "id": "stock-ctrl-01",
+      "kind": "inventory",
+      "source_id": "CTRL-01",
+      "text": "Six usable components are available. Four warranty and eight sales assemblies require twelve.",
+      "observed_hour": 0
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "SUP-ECO",
+      "plan_id": "economy",
+      "label": "Reserve warranty stock; expedite economy",
+      "approved": true,
+      "lead_hours": 24,
+      "cutoff_delay_hours": 24,
+      "incremental_cost_minor": 6000
+    },
+    {
+      "id": "SUP-PRI",
+      "plan_id": "priority",
+      "label": "Reserve warranty stock; expedite priority",
+      "approved": true,
+      "lead_hours": 30,
+      "cutoff_delay_hours": 0,
+      "incremental_cost_minor": 14000
+    },
+    {
+      "id": "SUP-UNKNOWN",
+      "plan_id": "unapproved",
+      "label": "Unapproved spot supply",
+      "approved": false,
+      "lead_hours": 8,
+      "cutoff_delay_hours": 0,
+      "incremental_cost_minor": 2000
+    }
+  ]
+}
