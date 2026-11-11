@@ -2,6 +2,8 @@
 
 Agentic Operations is a Hermes plugin for manufacturing shortage decisions. It compares constrained plans, persists action intent, recovers interrupted simulated purchases, and compares observed shipments with the original forecast. All business data and external actions in this release are synthetic.
 
+[Watch the 82-second demo](https://github.com/ryanteoyx/agentic-operations/releases/download/v0.1.0/agentic-operations-82s.mp4) · [Release and evidence](https://github.com/ryanteoyx/agentic-operations/releases/tag/v0.1.0) · [Hermes catalog PR](https://github.com/NousResearch/hermes-agent/pull/153990)
+
 ## What it does
 
 A delayed component shipment puts two commitments at risk for **Orange**, the
@@ -57,7 +59,7 @@ full revision rather than a moving branch. The revision must be published in
 the remote repository for the pinned install to resolve.
 
 ```sh
-PLUGIN_SHA="$(git rev-parse HEAD)"
+PLUGIN_SHA="dd4a6cf563a03b65231e30f3b32338ab1fe5a113"
 hermes plugins install 'ryanteoyx/agentic-operations#plugin/hermes_ops' --ref "$PLUGIN_SHA" --enable
 hermes tools list
 hermes ops seed

@@ -283,8 +283,8 @@ python3 demo/run_demo.py --artifacts ./artifacts/recovery-proof
 ```
 
 It uses fresh temporary data by default and writes stage JSON plus
-`result.json`. Final measurement from the clean installed release revision
-remains pending. Optional video capture/render tooling is described in
+`result.json`. The clean installed release measurement passed on 12 November
+2026; the evidence is recorded below. Optional video capture/render tooling is described in
 [`demo/video/README.md`](../demo/video/README.md), separate from product
 dependencies.
 
@@ -297,25 +297,37 @@ YAML matched the specified configuration without installing dependencies.
 Local Markdown links and heading anchors resolved, including the company
 deployment guide.
 
-### Remaining release gates and non-claims
+### Published release verification — 12 November 2026
 
-The coordination targets are **04:45 SGT freeze**, **05:15 SGT release**, and
-delivery **before 05:30 SGT** on 12 November. These are operating targets, not
-proof of publication or a change to the announcement deadline recorded in
-[`submission.md`](submission.md).
+Release source: **`dd4a6cf563a03b65231e30f3b32338ab1fe5a113`**.
+The source was published at approximately 04:17 SGT. The release and video
+were published at **05:19 SGT**, before the requested 05:30 delivery deadline.
 
-The native **Operations** browser entry, full authenticated workflow, and
-updated-bundle validation passed. For the remaining gates, record the exact
-revision, environment, command or browser exercise, outcome, and artifact/URL:
+| Gate | Recorded result and evidence |
+| --- | --- |
+| Exact public install | URL/subdirectory install with `--ref` set to the full SHA and `--enable`, in fresh `artifacts/release/hermes-home`; installer metadata recorded `pinned: true` and the matching revision. Installed package bytes matched the source. |
+| Hermes validator | `hermes plugins validate <installed-root> --install-deps` passed on the existing Hermes v0.23.1+ source environment (`b5f15a6d31`). Security scan safe; registration and declarations matched; no core overrides. The URL install carried the expected “custom/unreviewed source” notice. |
+| Installed readiness | `hermes tools list` showed enabled `agentic_operations`; `hermes ops list` returned an empty workspace before the scenario. |
+| Actual recovery | `capture.py` used the clean installed runtime and a fresh synthetic namespace. Owned child exited 73 after ERP commit; fresh recovery process exited 0; one purchase order existed for the original action. |
+| Outcomes | V1 sales: forecast h48, observed h72, +24h forecast error, 12h late. V2 sales: forecast and observed h54, no lateness. Both warranty commitments met; original v1 prediction preserved. |
+| UI evidence | All nine checkpoint screenshots, case identities, source/recording hashes, and measurements reviewed. Zero browser console, HTTP, or request errors. |
+| Hosted CI | [Python 3.11 and 3.14 passed](https://github.com/ryanteoyx/agentic-operations/actions/runs/43095080567) for the exact release SHA. |
+| Video | Hyperframes 0.9.34, two workers, no fallback: 82.000 seconds, 2460 frames, 1920×1080 at 30fps, H.264/yuv420p and stereo AAC/48kHz. Decode, narration/caption provenance, and visual checks passed. Final entrant listening remains part of X-post approval. |
+| Publication | [v0.1.0 release, MP4, and evidence](https://github.com/ryanteoyx/agentic-operations/releases/tag/v0.1.0). GitHub asset digest matched local video SHA-256 `7ec42d9a5d9d4f5d466ef940ff9f24e0518d2e75ce70a0f595de4f288a1170c0`. |
+| Catalog | [PR #153990](https://github.com/NousResearch/hermes-agent/pull/153990), verified **OPEN**, not draft, at 05:19 SGT. Maintainer review and merge remain pending. |
 
-1. Install and validate the exact **published full release SHA**, then record
-   the clean installed-copy check.
-2. Final recovery/outcome measurement and real release capture, with the
-   original forecast intact; final video asset is not published yet.
-3. First hosted CI run and any subsequently configured required checks.
-4. Catalog PR, public release/video URLs, and submission confirmation. No
-   catalog PR has been created in this record; do not substitute invented URLs
-   or planned actions for completed submissions.
+Local records are under `artifacts/release/verification/` and
+`artifacts/video/capture-release/`. The public release evidence omits local
+paths and includes the measured results and reviewed editorial cuts.
+The original automatic video-offset calculation included encoder tail time;
+the delivered edit uses corrected cuts matched to the approved screenshots.
+Frozen recording and business measurements were not changed. See the
+[video tooling limitation](../demo/video/README.md#published-v010-video).
+
+The X account was reported temporarily limited. No X post or final Typeform
+submission has been made. Entrant listening/approval and a working authenticated
+posting surface remain necessary. Linear, Review, and other account-level
+connections are still governed by the setup status above.
 
 This release uses only synthetic ERP actions and SQLite on a single host.
 Production ERP connectors, Temporal, Postgres, shared company memory, RBAC,

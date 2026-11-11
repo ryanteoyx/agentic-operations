@@ -5,6 +5,21 @@ measurement run and checks its evidence before final staging. Nothing here commi
 publishes, connects an account, or submits a form. All generated media and private
 capture manifests live under the ignored `artifacts/video/` tree.
 
+## Published v0.1.0 video
+
+The [82-second release video and evidence](https://github.com/ryanteoyx/agentic-operations/releases/tag/v0.1.0)
+use the clean installed source revision
+`dd4a6cf563a03b65231e30f3b32338ab1fe5a113`. Business measurements and all nine
+UI screenshots were checked before rendering.
+
+**Known capture-tooling limitation:** the automatic offset computed from total
+recording duration included encoder tail time and selected later checkpoints.
+The delivered video uses reviewed editorial cut windows matched to the approved
+screenshots. These windows and recording/screenshot hashes are in the release's
+`release-evidence.json`. The raw recording, measured outcomes, and narration
+were not changed. Restaging with the original automatic offsets will not
+reproduce this edit; use the recorded editorial windows and verify the frames.
+
 ## Fixed production contract
 
 - 1920 × 1080, 30 fps, exactly 82 seconds; H.264 / `yuv420p`, stereo AAC / 48 kHz.

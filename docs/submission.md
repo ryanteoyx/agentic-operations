@@ -39,16 +39,23 @@ The entry is the plugin itself; functionality beyond a prompt or skill is favore
 | Plugin Description | Yes | A Hermes plugin for durable manufacturing decisions: compare constrained shortage plans, reconcile interrupted simulated ERP actions, observe shipment outcomes, and activate evidence-backed estimate corrections. |
 | Email Address | Yes | Supplied and saved locally; intentionally omitted here |
 | Discord Username | Yes | Supplied and saved locally; intentionally omitted here |
-| X Demo Post Link | Yes | Awaiting approved video upload and post |
-| GitHub Link to your Hermes Plugin Pull Request | Yes | Awaiting validated release and opened catalog PR |
+| X Demo Post Link | Yes | Video published; awaiting entrant review and X account availability |
+| GitHub Link to your Hermes Plugin Pull Request | Yes | https://github.com/NousResearch/hermes-agent/pull/153990 — verified open at 05:19 SGT |
 
 The form also has a statement directing entrants to submit the catalog PR.
 The first four fields were filled, saved locally, and verified after reloading.
 The form is paused at **X Demo Post Link**; nothing has been submitted.
 Personal contact details are intentionally omitted from this public document.
 
-The X account is temporarily limited; no bypass has been attempted. The X demo
-post and catalog PR links have not yet been created.
+The X account was reported temporarily limited; no bypass has been attempted.
+No X post or final form submission has been made.
+
+The [v0.1.0 release](https://github.com/ryanteoyx/agentic-operations/releases/tag/v0.1.0)
+and [82-second MP4](https://github.com/ryanteoyx/agentic-operations/releases/download/v0.1.0/agentic-operations-82s.mp4)
+were published at 05:19 SGT on 12 November. The catalog PR pins
+`dd4a6cf563a03b65231e30f3b32338ab1fe5a113`; exact-revision installation,
+Hermes validation, and hosted Python CI passed. See the
+[verification record](devin-harness.md#published-release-verification--12-november-2026).
 
 ## Catalog release gate
 
